@@ -31,7 +31,20 @@ async function importShim (id, parentUrl) {
   return topLevelLoad(await resolve(id, parentUrl || pageBaseUrl));
 }
 
+  // PATCH
+  async function resetImport(id) {
+    let url = await resolve(id, baseUrl)
+    for(let reg_url in registry) {
+      if(reg_url.startsWith(url)) {
+        //  TODO: Make sure we also remove unnecessary Blobs in registry
+        delete registry[reg_url];
+      }
+
+    }
+  }
+
 self.importShim = importShim;
+self.resetImport = resetImport;
 
 const meta = {};
 const wasmModules = {};
